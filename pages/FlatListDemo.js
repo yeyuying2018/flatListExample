@@ -11,7 +11,8 @@ import {
     Text,
     View,
     FlatList,
-    RefreshControl
+    RefreshControl,
+    ActivityIndicator
     } from 'react-native';
 
 const CITY_NAME = ["长安区", "桥东区", "桥西区", "新华区", "裕华区", "井陉矿区", "辛集市", "藁城市", "晋州市", "新乐市", "鹿泉市", "井陉县", "微水镇", "正定县", "正定镇", "栾城县", "栾城镇", "行唐县", "龙州镇", "灵寿县", "灵寿镇", "高邑县", "高邑镇", "深泽县", "深泽镇", "赞皇县", "赞皇镇", "无极县", "无极镇", "平山县", "平山镇", "元氏县", "槐阳镇", "赵县", "赵州镇"];
@@ -47,6 +48,18 @@ export default class FlatListDemo extends Component {
             })
         }, 2000);
     }
+    _genIndicator(){
+        return (
+            <View style={styles.indicator}>
+               <ActivityIndicator
+                    size={'large'}
+                    animating={true}
+                    color = {'red'}
+               />
+                <Text>正在加载更多</Text>
+            </View>
+        )
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -62,9 +75,10 @@ export default class FlatListDemo extends Component {
                             tintColor={'red'}
                             titleColor={'red'}
                              refreshing = {this.state.isLoading}
-                             onRefresh ={()=>{this._loadData()}}
+                             onRefresh ={()=>this._loadData()}
                           />
                     }
+                    ListFooterComponent={()=>this._genIndicator()}
                     >
                 </FlatList>
             </View>
@@ -92,5 +106,11 @@ const styles = StyleSheet.create({
     text: {
         fontSize:20,
         color: '#fff'
+    },
+    indicator: {
+        alignItems: 'center',
+        justifyContent: 'center',
+
+        margin: 10
     }
 });
