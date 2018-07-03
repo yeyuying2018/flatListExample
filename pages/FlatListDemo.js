@@ -32,16 +32,24 @@ export default class FlatListDemo extends Component {
             </View>
         )
     }
-    _loadData(){
+    _loadData(refresing){
+        //如果是下拉加载
+        if(refresing){
+            this.setState({
+                isLoading: true,
+            })
+        }
         let dataArray = [];
-        this.setState({
-            isLoading: true,
-        })
+
         setTimeout(()=>{
-            console.log(1);
-            for(let i=this.state.dataArray.length;i>=0;i--){
-                dataArray.push(this.state.dataArray[i]);
+            if(refresing){
+                for(let i=this.state.dataArray.length;i>=0;i--){
+                    dataArray.push(this.state.dataArray[i]);
+                }
+            }else{
+                dataArray = this.state.dataArray.concat(CITY_NAME);
             }
+
             this.setState({
                 dataArray: dataArray,
                 isLoading: false
@@ -75,10 +83,16 @@ export default class FlatListDemo extends Component {
                             tintColor={'red'}
                             titleColor={'red'}
                              refreshing = {this.state.isLoading}
-                             onRefresh ={()=>this._loadData()}
+                             onRefresh ={()=>this._loadData(true)}
                           />
                     }
+                    //底部加载更多样式
                     ListFooterComponent={()=>this._genIndicator()}
+                    //底部加载
+                    onEndReached = {()=>{
+                        //传参与否区分上拉加载还是下拉加载
+                        this._loadData();
+                    }}
                     >
                 </FlatList>
             </View>
