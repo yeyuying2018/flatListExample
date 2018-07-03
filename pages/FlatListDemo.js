@@ -83,7 +83,9 @@ export default class FlatListDemo extends Component {
                             tintColor={'red'}
                             titleColor={'red'}
                              refreshing = {this.state.isLoading}
-                             onRefresh ={()=>this._loadData(true)}
+                            onRefresh ={()=>{
+                                this._loadData(true)
+                             }}
                           />
                     }
                     //底部加载更多样式
